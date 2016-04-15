@@ -1,0 +1,346 @@
+options{
+    MULTI = true;   // Opcion que permite la creacion de nodos hijos
+    STATIC = false; // Opcion que que habilita la reutilizacion varias veces
+    LOOKAHEAD = 2;    //Analiza tokens seguidos segun sean establecidos
+    FORCE_LA_CHECK = true;  //Fuerza al analizador a analizar mas de un token
+    ERROR_REPORTING = true;
+    OUTPUT_DIRECTORY = "C:\\Users\\Administrador\\Documents\\Compiladores2\\Laboratorio\\[Compi2]Proyecto1_201114421\\[Compi2]Proyecto1_Java_Javacc\\src\\Analizadores";
+    IGNORE_CASE = true; //Opcion para que que no tenga distincion entre mayusculas y minusculas
+}
+
+PARSER_BEGIN(GramaticaPHP)
+package AnalizadorPHP;
+import java.io.*;
+    public class GramaticaPHP{
+        static int contador = 0;
+	public static void main(String args[]){
+            System.out.println("Ingrese cadena entrada ...");
+            try
+            {		
+                GramaticaPHP gramaticaPHP = new GramaticaPHP(System.in) ;
+                gramaticaPHP.inicio();
+                System.out.println("Se ha terminado el analisis =D");			
+            }
+            catch(ParseException e)
+            {
+                System.out.println(e.getMessage());
+                System.out.println("El analisis contiene errores D=");
+            }
+	}
+    }
+PARSER_END(GramaticaPHP)
+
+SKIP: {     //Tokens de salida y los que se omiten
+    " "
+    |"\n"
+    |"\r"
+    |"\t"
+    | "/*" : COMMENT
+    |"//" :  COMMENTSIMPLE
+}
+
+<COMMENT> SKIP :{
+    "*/" : DEFAULT
+}
+
+<COMMENT> MORE :{
+    <~[]>
+}
+
+<COMMENTSIMPLE> SKIP : {
+    "\n": DEFAULT
+}
+<COMMENTSIMPLE> MORE : {
+    <~[]>
+}
+
+TOKEN:{
+    <INCIO: "<?php">
+    |<FIN: "?>">
+    |<DOLAR: "$">
+    |<COMA: ",">
+    |<IGUAL: "=">
+    |<PUNTOYCOMA: ";">
+    |<PUNTO: ".">
+    |<PAREA: "(">
+    |<PAREC: ")">
+    |<CORCHA: "{">
+    |<CORCHC: "}">
+    |<OOR: "||">
+    |<AAND: "&&">
+    |<NNOT: "!">
+    |<IGUALQ: "==">
+    |<IDENTICOQ: "===">
+    |<DIFERENTEQ1: "!=">
+    |<DIFERENTEQ2: "<>">
+    |<NOIDENTICOQ: "!==">
+    |<MAYOR: ">">
+    |<MENOR: "<">
+    |<MAYORQ: ">=">
+    |<MENORQ: "<=">
+    |<AMPERSON: "&">
+}
+
+TOKEN:{
+    <SUMA: "+">
+    |<RESTA: "-">
+    |<MULTIPLICACION: "*">
+    |<DIVISION: "/">
+    |<INCRE: "++">
+    |<DECRE: "--">
+    |<POTENCIA: "**">
+    |<MODULO: "%">
+}
+
+TOKEN:{
+    <TINCLUDE: "include">
+    <TCLASS: "class">
+    |<TVAR: "var">
+    |<TBREAK: "break">
+    |<TCONTINUE: "continue">
+    |<TPUBLIC: "public">
+    |<TPRIVATE: "private">
+    |<TPROTECTED: "protected">
+    |<TOR: "or">
+    |<TXOR: "xor">
+    |<TAND: "and">
+    |<TTRUE: "true">
+    |<TFALSE: "false">
+    |<ECHO: "echo">
+    |<FUNC: "function">
+}
+
+TOKEN:{
+    <NUMERO: (["0" - "9"])+>
+    |<IDEN: ["a" - "z", "A" - "Z"](["a" - "z", "A" - "Z", "0" - "9", "_"])*>
+    |<DECIMAL: (["0"-"9"])+"."(["0"-"9"])*>
+    |<CADENA:
+        "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+    >
+    |<CARACTER: 
+        "'"
+     (   (~["\"","\\"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+        )
+    )
+    "'"
+    >
+}
+//********************+++++ INICIO +++++********************
+void inicio():{}
+{
+    cuerpo() <EOF>
+}
+
+void cuerpo():{}
+{
+    <INICIO> sentencias() <FIN>
+}
+
+//>>>>>>>>>> SENTENCIAS
+void sentencias():{}
+{
+    (listaSentencias())+
+}
+
+void listaSentencias():{}
+{
+    <TBREAK>
+    |<TCONTINUE>
+    |declaAsigVariable()
+    |llamadaMF()
+    |echo()
+    |MetodoFuncion()
+}
+
+//>>>>>>>>>> DECLARACION - ASIGNACION DE VARIABLES
+void declaAsigVariable():{}
+{
+    [tipo()] [<TVAR>] <DOLAR> id() [listaDeclaAsigVariable()] <IGUAL> logica() <PUNTOYCOMA>
+}
+
+void tipo():{}
+{
+    <TPUBLIC>
+    |<TPRIVATE>
+    |<TPROTECTED>
+}
+
+void listaDeclaAsigVariable():{}
+{
+    (<COMA> <DOLAR> id())+
+}
+
+//>>>>>>>>>> LLAMADA A METODOS Y FUNCIONES
+void llamadaMF():{}
+{
+    id() <PAREA> [listaParamLlamadaMF()] <PAREAC>
+}
+
+void listaParamLlamadaMF():{}
+{
+    logica()
+    (
+    <COMA> logica()
+    )*
+}
+
+//>>>>>>>>>> ECHO
+void echo():{}
+{
+    <ECHO> logica() (<PUNTO> logica())*
+}
+
+//>>>>>>>>>> METODOS Y FUNCIONES
+void MetodoFuncion():{}
+{
+    [tipo()] <FUNC> id() <PAREA> listaParamMF() <PAREC> <CORCHA> sentencias() <CORCHC>
+}
+
+void listaParamMF():{}
+{
+    
+}
+
+//>>>>>>>>>> EXPRESION LOGICA
+void logica():{}
+{
+    logica2()
+    (
+    <TOR> logica2()
+    |<OOR> logica2()
+    )
+}
+
+void logica2():{}
+{
+    logica3()
+    (
+    <TXOR> logica3()
+    )
+}
+
+void logica3():{}
+{
+    logica4()
+    (
+    <TAND> logica4()
+    |<AAND> logica4()
+    )
+}
+
+void logica4():{}
+{
+    <NNOT> relacional()
+    | relacional()
+}
+
+//>>>>>>>>>> RELACIONALES
+void relacional():{}
+{
+    aritmetica()
+    [
+    op() aritmetica()
+    ]
+}
+
+void op():{}
+{
+    <IGUALQ>
+    |<IDENTICOQ>
+    |<DIFERENTEQ1>
+    |<DIFERENTEQ2>
+    |<NOIDENTICOQ>
+    |<MAYOR>
+    |<MENOR>
+    |<MAYORQ>
+    |<MENORQ>
+}
+
+//>>>>>>>>>> EXPRESION ARITMETICA
+void aritmetica():{}
+{
+    aritmetica2()
+    (
+    <SUMA> aritmetica2()
+    |<RESTA> aritmetica2()
+    )
+}
+
+void aritmetica2():{}
+{
+    aritmetica3()
+    (
+    <MULTIPLICACION> aritmetica3()
+    |<DIVISION> aritmetica3()
+    )
+}
+
+void aritmetica3():{}
+{
+    aritmetica4()
+    [
+    <POTENCIA> aritmetica4()
+    |<MODULO> aritmetica4()
+    ]
+}
+
+void aritmetica4():{}
+{
+    aritmetica5() [<INCRE> | <DECRE>]
+
+    |(<INCRE> | <DECRE>) aritmetica5()
+    
+}
+
+void aritmetica5():{}
+{
+    <PAREA> logica() <PAREAC>
+    |llamadaMF()
+    |<DOLAR> id()
+    |numero()
+    |decimal()
+    |cadena()
+    |caracter()
+    |<TTRUE>
+    |<TFALSE>
+}
+
+//>>>>>>>>>> ULTIMOS D=
+void id():{}
+{
+    <IDEN>
+}
+
+void numero():{}
+{
+    <NUMERO> 
+}
+
+void cadena():{}
+{
+    <CADENA>
+}
+
+void caracter():{}
+{
+    <CARACTER>
+}
+
+void decimal():{}
+{
+    <DECIMAL>
+}

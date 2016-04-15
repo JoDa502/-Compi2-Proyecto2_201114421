@@ -1,0 +1,9 @@
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\bin\Debug\[Compi2]Proyecto2ClienteCS.exe.config
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\bin\Debug\[Compi2]Proyecto2ClienteCS.exe
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\bin\Debug\[Compi2]Proyecto2ClienteCS.pdb
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\obj\Debug\[Compi2]Proyecto2ClienteCS.csprojResolveAssemblyReference.cache
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\obj\Debug\_Compi2_Proyecto2ClienteCS.Form1.resources
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\obj\Debug\_Compi2_Proyecto2ClienteCS.Properties.Resources.resources
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\obj\Debug\[Compi2]Proyecto2ClienteCS.csproj.GenerateResource.Cache
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\obj\Debug\[Compi2]Proyecto2ClienteCS.exe
+C:\Users\Administrador\Documents\Compiladores2\Laboratorio\[Compi2]Proyecto2_201114421\[Compi2]Proyecto2ClienteCS\[Compi2]Proyecto2ClienteCS\obj\Debug\[Compi2]Proyecto2ClienteCS.pdb
